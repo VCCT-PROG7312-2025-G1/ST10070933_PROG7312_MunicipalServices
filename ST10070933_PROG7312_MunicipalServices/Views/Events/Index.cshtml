@@ -1,0 +1,123 @@
+﻿@model List<ST10070933_PROG7312_MunicipalServices.Models.Event>
+@{
+    ViewBag.Title = "Local Events & Announcements";
+}
+
+<div class="container mt-4">
+    <!-- Header -->
+    <div class="text-center mb-5">
+        <img src="~/images/municipality_logo.png" alt="Municipality Logo" width="80" class="mb-2" />
+        <h2 class="fw-bold text-primary">Local Events & Announcements</h2>
+        <p>Stay updated on community happenings and local initiatives</p>
+    </div>
+
+    <!-- Search & Sort -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-body">
+            <form method="get" class="row g-3 align-items-end">
+                <div class="col-md-4">
+                    <label class="form-label fw-semibold">Category</label>
+                    <select name="searchCategory" class="form-select">
+                        <option value="">All Categories</option>
+                        @foreach (var category in ViewBag.Categories as HashSet<string>)
+                        {
+                            <option value="@category">@category</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label fw-semibold">Date</label>
+                    <input type="date" name="searchDate" class="form-control" />
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label fw-semibold">Sort By</label>
+                    <select name="sortOption" class="form-select">
+                        <option value="">Sort By...</option>
+                        <option value="Date">Date</option>
+                        <option value="Category">Category</option>
+                        <option value="Title">Title</option>
+                    </select>
+                </div>
+                <div class="col-md-2 text-end">
+                    <button type="submit" class="btn btn-primary w-100">Search</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Success Message -->
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+    }
+
+    <!-- Add Event Button -->
+    <div class="mb-3 text-end">
+        <a asp-action="Create" class="btn btn-success">
+            <i class="bi bi-plus-circle"></i> Add New Event
+        </a>
+    </div>
+
+    <!-- Events Display -->
+    @if (Model.Count == 0)
+    {
+        <p class="text-muted text-center">No events found.</p>
+    }
+    else
+    {
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+            @foreach (var ev in Model)
+            {
+                <div class="col">
+                    <div class="card h-100 shadow-sm border-0">
+                        <div class="card-body">
+                            <h5 class="card-title text-primary fw-bold">@ev.Title</h5>
+                            <span class="badge bg-info text-dark">@ev.Category</span>
+                            <p style="font-size: 13px;">
+                                <i class="bi bi-calendar-event"></i>
+                                @ev.StartDate.ToShortDateString() - @ev.EndDate.ToShortDateString()
+                            </p>
+                            <p class="card-text">@ev.Description</p>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+
+    <!-- Upcoming Events -->
+    @if (ViewBag.UpcomingEvents != null && ((Queue<ST10070933_PROG7312_MunicipalServices.Models.Event>)ViewBag.UpcomingEvents).Count > 0)
+    {
+        <div class="mt-5">
+            <h4 class="fw-bold text-primary mb-3">🕒 Upcoming Events</h4>
+            <div class="list-group">
+                @foreach (var upcoming in ViewBag.UpcomingEvents)
+                {
+                    <div class="list-group-item d-flex justify-content-between align-items-center">
+                        <div>
+                            <strong>@upcoming.Title</strong> <span class="text-muted">(@upcoming.Category)</span>
+                        </div>
+                        <span class="badge bg-secondary">@upcoming.StartDate.ToShortDateString()</span>
+                    </div>
+                }
+            </div>
+        </div>
+    }
+
+    <!-- Recommended Events -->
+    @if (ViewBag.RecommendedEvents != null && ((List<ST10070933_PROG7312_MunicipalServices.Models.Event>)ViewBag.RecommendedEvents).Count > 0)
+    {
+        <div class="mt-5">
+            <h4 class="fw-bold text-success mb-3">⭐ Recommended For You</h4>
+            <div class="list-group">
+                @foreach (var rec in ViewBag.RecommendedEvents)
+                {
+                    <div class="list-group-item">
+                        <strong>@rec.Title</strong> — <span class="text-muted">@rec.Category</span>
+                        <span class="float-end">@rec.StartDate.ToShortDateString()</span>
+                    </div>
+                }
+            </div>
+        </div>
+    }
+</div>

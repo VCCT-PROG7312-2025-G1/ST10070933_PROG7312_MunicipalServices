@@ -1,0 +1,111 @@
+html {
+    font-size: 14px;
+}
+
+@media (min-width: 768px) {
+    html {
+        font-size: 16px;
+    }
+}
+
+/* Focus styles */
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+    box-shadow: 0 0 0 0.1rem #1e90ff, 0 0 0 0.25rem #1e90ff;
+}
+
+/* Full height and body margin */
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    margin-bottom: 60px;
+    background-color: #121212; /* Dark background */
+    color: #e0e0e0; /* Light text for readability */
+    font-family: 'Poppins', sans-serif;
+}
+
+/* Headings */
+h1, h2, h3, h4, h5 {
+    color: #ffffff;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* Links */
+a {
+    color: #1e90ff;
+    text-decoration: none;
+}
+
+    a:hover {
+        color: #63b3ed;
+        text-decoration: underline;
+    }
+
+/* Cards */
+.card {
+    background-color: #1e1e1e; /* Darker card background */
+    border-radius: 12px;
+    border: 1px solid #2a2a2a;
+    color: #f0f0f0;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+}
+
+/* Buttons */
+.btn {
+    border-radius: 8px;
+    transition: 0.3s;
+}
+
+.btn-primary {
+    background-color: #1e90ff;
+    border-color: #1e90ff;
+    color: #fff;
+}
+
+    .btn-primary:hover {
+        background-color: #0078d7;
+        border-color: #0078d7;
+    }
+
+.btn-secondary {
+    background-color: #2d2d2d;
+    border-color: #3a3a3a;
+    color: #e0e0e0;
+}
+
+    .btn-secondary:hover {
+        background-color: #3a3a3a;
+        color: #ffffff;
+    }
+
+/* Navbar */
+.navbar {
+    background-color: #1a1a1a !important;
+}
+
+.navbar-brand, .nav-link {
+    color: #e0e0e0 !important;
+}
+
+    .nav-link:hover {
+        color: #1e90ff !important;
+    }
+
+/* Footer */
+footer {
+    background-color: #1a1a1a;
+    color: #999;
+    padding: 1rem 0;
+    text-align: center;
+    border-top: 1px solid #2a2a2a;
+}
+
+.municipality-logo {
+    width: 170px; /* adjust as needed */
+    height: auto; /* keeps aspect ratio */
+    margin: -40px 0 0 0; /* remove default margins */
+    padding: 0; /* remove default padding */
+    max-width: 150px;
+}

@@ -1,0 +1,42 @@
+﻿@model List<ST10070933_PROG7312_MunicipalServices.Models.Issue>
+@{
+    ViewData["Title"] = "Reported Issues";
+}
+<h1>Reported Issues</h1>
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+}
+<p><a class="btn btn-primary" href="/Issues/Create">Report a New Issue</a></p>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Reported At (UTC)</th>
+            <th>Location</th>
+            <th>Category</th>
+            <th>Description</th>
+            <th>Attachments</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var issue in Model)
+        {
+            <tr>
+                <td>@issue.ReportedAt.ToString("g")</td>
+                <td>@issue.Location</td>
+                <td>@issue.Category</td>
+                <td>@issue.Description</td>
+                <td>
+                    @foreach (var a in issue.Attachments)
+                    {
+                        <a href="@a" target="_blank">Open</a>
+                
+                        <br />
+                    }
+                </td>
+                <td>@issue.Status</td>
+            </tr>
+        }
+    </tbody>
+</table>
