@@ -13,7 +13,6 @@ namespace ST10070933_PROG7312_MunicipalServices.Services
         void AddEvent(Event ev);
         IEnumerable<Event> SearchEvents(string? category = null, DateTime? date = null);
 
-        // Add this
         List<Event> GetAllEvents();
 
         // Search history & recommendations

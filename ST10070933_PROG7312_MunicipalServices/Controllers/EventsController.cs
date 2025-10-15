@@ -22,10 +22,10 @@ namespace ST10070933_PROG7312_MunicipalServices.Controllers
         // GET: Events
         public IActionResult Index(string searchCategory = "", DateTime? searchDate = null, string sortOption = "")
         {
-            // ✅ Get all events
+            // Get all events
             var events = _dataService.GetAllEvents();
 
-            // ✅ Use a SortedDictionary to organize events by StartDate
+            // Use a SortedDictionary to organize events by StartDate
             var sortedEvents = new SortedDictionary<DateTime, List<Event>>();
             foreach (var ev in events)
             {
@@ -35,7 +35,7 @@ namespace ST10070933_PROG7312_MunicipalServices.Controllers
                 sortedEvents[ev.StartDate].Add(ev);
             }
 
-            // ✅ Use a Queue for upcoming events
+            // Use a Queue for upcoming events
             Queue<Event> upcomingEvents = new Queue<Event>();
             foreach (var ev in events.OrderBy(e => e.StartDate))
             {
@@ -44,7 +44,7 @@ namespace ST10070933_PROG7312_MunicipalServices.Controllers
                 if (upcomingEvents.Count > 5) break; // Keep only next 5
             }
 
-            // ✅ Filter by category if provided
+            // Filter by category if provided
             if (!string.IsNullOrWhiteSpace(searchCategory))
             {
                 events = events
@@ -54,7 +54,7 @@ namespace ST10070933_PROG7312_MunicipalServices.Controllers
                 _recentSearchCategories.Add(searchCategory);
             }
 
-            // ✅ Filter by date if provided
+            // Filter by date if provided
             if (searchDate.HasValue)
             {
                 events = events
@@ -62,7 +62,7 @@ namespace ST10070933_PROG7312_MunicipalServices.Controllers
                     .ToList();
             }
 
-            // ✅ Sort results if a sort option is selected
+            // Sort results if a sort option is selected
             if (!string.IsNullOrEmpty(sortOption))
             {
                 switch (sortOption)
@@ -79,10 +79,10 @@ namespace ST10070933_PROG7312_MunicipalServices.Controllers
                 }
             }
 
-            // ✅ HashSet for unique categories
+            // HashSet for unique categories
             var uniqueCategories = new HashSet<string>(_dataService.GetAllEvents().Select(e => e.Category));
 
-            // ✅ Recommendation logic (based on most-searched category)
+            // Recommendation logic (based on most-searched category)
             var recommendedEvents = new List<Event>();
             if (_recentSearchCategories.Count > 0)
             {
@@ -97,13 +97,19 @@ namespace ST10070933_PROG7312_MunicipalServices.Controllers
                     .ToList();
             }
 
-            // ✅ ViewBags for front-end
+            // ViewBags for front-end
             ViewBag.Categories = uniqueCategories;
             ViewBag.RecommendedEvents = recommendedEvents;
             ViewBag.UpcomingEvents = upcomingEvents;
             ViewBag.Message = events.Any()
                 ? $"{events.Count} event(s) found."
                 : "No matching events found.";
+
+            // Optional success message display (if coming from Create action)
+            if (TempData["SuccessMessage"] != null)
+            {
+                ViewBag.SuccessMessage = TempData["SuccessMessage"];
+            }
 
             return View(events);
         }
@@ -119,13 +125,41 @@ namespace ST10070933_PROG7312_MunicipalServices.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(Event newEvent)
         {
-            if (ModelState.IsValid)
+            // Inline validation checks before saving
+            if (newEvent == null)
             {
-                _dataService.AddEvent(newEvent);
-                TempData["SuccessMessage"] = "Event added successfully!";
-                return RedirectToAction(nameof(Index));
+                ModelState.AddModelError("", "Invalid event data. Please try again.");
+                return View(newEvent);
             }
-            return View(newEvent);
+
+            if (string.IsNullOrWhiteSpace(newEvent.Title))
+            {
+                ModelState.AddModelError("Title", "The event title cannot be empty.");
+            }
+
+            if (newEvent.StartDate < DateTime.Today)
+            {
+                ModelState.AddModelError("StartDate", "The start date cannot be in the past.");
+            }
+
+            if (string.IsNullOrWhiteSpace(newEvent.Category))
+            {
+                ModelState.AddModelError("Category", "Please select or enter a category.");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                // Validation failed — redisplay with errors
+                return View(newEvent);
+            }
+
+            // Save event if validation passes
+            _dataService.AddEvent(newEvent);
+
+            // Custom success message (will display on Index page)
+            TempData["SuccessMessage"] = $"🎉 '{newEvent.Title}' was successfully added to the events list!";
+
+            return RedirectToAction(nameof(Index));
         }
     }
 }

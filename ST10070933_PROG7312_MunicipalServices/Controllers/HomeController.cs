@@ -18,7 +18,7 @@ namespace ST10070933_PROG7312_MunicipalServices.Controllers
 
         public IActionResult Index()
         {
-            // The main menu. We will only enable Report Issues; other options are placeholders/disabled until implemented.
+            
             return View();
         }
 

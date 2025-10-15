@@ -8,11 +8,11 @@ namespace ST10070933_PROG7312_MunicipalServices.Services
 {
     public class InMemoryDataService : IDataService
     {
-        // ======= Part 1: Issues =======
+        //Part 1: Issues
         public List<Issue> Issues { get; } = new List<Issue>();
 
-        // ======= Part 2: Events =======
-        // SortedDictionary keyed by StartDate for chronological listing
+        // Part 2: Events 
+        // SortedDictionary keyed by StartDate for  listing
         public SortedDictionary<DateTime, List<Event>> EventsByDate { get; } = new SortedDictionary<DateTime, List<Event>>();
 
         // Unique categories
@@ -32,7 +32,7 @@ namespace ST10070933_PROG7312_MunicipalServices.Services
             SeedSampleEvents();
         }
 
-        // ======= Issues =======
+        //  Issues 
         public void AddIssue(Issue issue)
         {
             lock (_lock)
@@ -46,7 +46,7 @@ namespace ST10070933_PROG7312_MunicipalServices.Services
             return Issues;
         }
 
-        // ======= Events =======
+        //Events 
         public void AddEvent(Event ev)
         {
             lock (_lock)
@@ -105,6 +105,7 @@ namespace ST10070933_PROG7312_MunicipalServices.Services
             }
         }
 
+        //Sample data events
         private void SeedSampleEvents()
         {
             var e1 = new Event { Title = "Community Clean-up", Description = "Neighborhood clean-up and recycling day.", StartDate = DateTime.UtcNow.AddDays(3), EndDate = DateTime.UtcNow.AddDays(3).AddHours(3), Category = "Community", Priority = 2 };
