@@ -259,6 +259,27 @@ ST10070933\_PROG7312\_MunicipalServices/
 &nbsp;   └── images/
 
 
+---
+
+### AI Usage
+
+During the development of this project, AI tools were used as supplementary resources to support understanding of programming concepts and explore modern design approaches. These tools provided guidance, but all coding and implementation were carried out alone by the developer.
+
+Tools used:
+
+- OpenAI ChatGPT (OpenAI, 2024) – Available at: https://openai.com/ – Used throughout development for guidance on programming concepts, problem-solving, and code review.
+- Claude AI (Anthropic, 2024) – Available at: https://claude.ai/ – Used for design advice and exploring design patterns.
+
+AI assistance was mainly used to:
+- Understand and implement complex data structures like SortedDictionary and search algorithms
+- Learn CSS techniques and UI design principles
+- Review MVC best practices and clean architecture approaches
+- Receive debugging tips and optimization suggestions
+- Design the event recommendation logic
+- Explore advanced LINQ queries and async/await patterns
+
+All code was written, tested, and fully understood by the developer. AI tools served as educational references, similar to documentation, tutorials, or forums.
+
 
 
 
