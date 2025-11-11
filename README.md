@@ -142,19 +142,18 @@ Navigate between:
 ---
 
 ## 📂 Project Structure
+
+```text
 ST10070933_PROG7312_MunicipalServices/
-│
 ├── Controllers/
 │   ├── HomeController.cs
 │   ├── IssuesController.cs
 │   ├── EventsController.cs
 │   └── ServiceRequestsController.cs
-│
 ├── Models/
 │   ├── Issue.cs
 │   ├── Event.cs
 │   └── ServiceRequest.cs
-│
 ├── Services/
 │   ├── IDataService.cs
 │   ├── InMemoryDataService.cs
@@ -164,21 +163,16 @@ ST10070933_PROG7312_MunicipalServices/
 │       ├── MinHeap.cs
 │       ├── Graph.cs
 │       └── GraphAlgorithms.cs
-│
 ├── Views/
 │   ├── Home/
 │   ├── Issues/
 │   ├── Events/
 │   └── ServiceRequests/
-│
 └── wwwroot/
     ├── css/
     ├── js/
     └── images/
-
-
-
-
+```
 ---
 
 ## 🤖 AI Usage
