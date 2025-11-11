@@ -2,7 +2,7 @@
 
 **Links**  
 - 🧩 [GitHub Repository](https://github.com/VCCT-PROG7312-2025-G1/ST10070933_PROG7312_MunicipalServices)  
-- 🎥 [YouTube Demonstration Video]([https://youtu.be/HEfFEwyDyWY](https://youtu.be/SlOvUs33qw4))
+- 🎥 [YouTube Demonstration Video](https://youtu.be/SlOvUs33qw4)
 
 ---
 
