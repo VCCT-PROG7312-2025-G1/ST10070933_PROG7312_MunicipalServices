@@ -22,15 +22,15 @@ The project allows residents to \*\*report issues\*\*, \*\*view local events and
 
 This project was developed to demonstrate practical implementations of:
 
-\- ASP.NET Core MVC architecture
+\- ASP.NET Core MVC architecture and dependency injection
 
-\- In-memory data management using custom services
+\- Advanced C# data structures for optimized data management
 
-\- Bootstrap 5 for responsive UI design
+\- In-memory data persistence without an external database
 
-\- Core C# collections (`List`, `Queue`, `HashSet`, `SortedDictionary`)
+\- Bootstrap 5 UI for a responsive, modern user experience
 
-\- Filtering, sorting, and basic recommendation logic
+\- Logical separation of concerns using models, controllers, and services
 
 
 
@@ -48,6 +48,7 @@ This project was developed to demonstrate practical implementations of:
 
 \- Submitted issues are stored \*\*in-memory\*\* via the `InMemoryDataService`.
 
+\- Provides a confirmation message upon successful submission.
 
 
 \### 📅 Local Events \& Announcements (Part 2)
@@ -67,20 +68,21 @@ This project was developed to demonstrate practical implementations of:
 \- Data is initially seeded through `InMemoryDataService` (no database required).
 
 
+\### 🚧 Service Request Status (Part 3 - Final Implementation)
 
-\### 🚧 Service Request Status (Part 3 - Placeholder)
-
-\- Planned section for future implementation of service request tracking.
-
-
-
+\- Users can submit, view, and track the progress of service requests.
+\- Each request is given a unique ID and stored in memory.
+\- Uses advanced data structures to manage and optimize service request data:
+   \-✅ AVL Tree – balances data dynamically for faster retrieval by ID and priority
+   \-✅ Min Heap – manages urgent, high-priority requests efficiently
+   \-✅ Graph – represents departmental routing and service relationships
+   \-✅ Dijkstra’s Algorithm – finds the shortest processing route between departments
+   \-✅ Prim’s MST – identifies optimal resource paths for minimal overhead
+   \-✅ DFS Traversal – used for exploring service dependencies within the system
+\- Real-time priority sorting and routing visualization enhance usability and realism.
 ---
 
-
-
 \## 🧠 Architecture
-
-
 
 \- \*\*Models\*\*  
 
@@ -96,27 +98,31 @@ This project was developed to demonstrate practical implementations of:
 
 &nbsp; - `EventsController` — Displays local events, filtering, and sorting.
 
+&nbsp; - `ServiceRequestsController` — handles submission, sorting, searching, and routing of service requests
 
 
 \- \*\*Services\*\*  
+&nbsp; `IDataService.cs`— service interface defining CRUD operations for issues, events, and requests
 
 &nbsp; `InMemoryDataService` implements the `IDataService` interface, handling:
 
-&nbsp; - Storage and retrieval of issues and events.
+&nbsp; - Manages seeded and runtime data
 
-&nbsp; - Seed data creation.
+&nbsp; - Integrates tree, heap, and graph data structures for optimized storage
 
-&nbsp; - Event search, sorting, and recommendation logic.
+&nbsp; - Demonstrates concurrent thread-safe access using locks
 
+\- \*\*Data Structures (under Services/DataStructures/)\*\*  
+&nbsp; `BSTNode.cs` — foundational node structure for binary trees
+&nbsp; `AVLTree.cs`— self-balancing tree used for fast ID and priority searches
+&nbsp; `MinHeap.css`— manages urgent requests efficiently (highest priority = top node)
+&nbsp; `Graph.cs`— defines departments and routes as graph nodes/edges
+&nbsp; `GraphAlgorithms.css`— includes Dijkstra’s shortest path, Prim’s MST, and DFS traversal
 
 
 ---
 
-
-
 \## 💻 Technologies Used
-
-
 
 | Category | Technology |
 
@@ -171,6 +177,7 @@ Explore the Application
 
 &nbsp; -📅 Local Events — Browse, filter, and sort events
 
+&nbsp; -🚧 Service Requests — Submit and track requests, view priority and department routing
 
 
 ---
@@ -187,21 +194,24 @@ Explore the Application
 
 &nbsp; -Queue<Event> for upcoming events.
 
--When the application restarts, all data resets to the seeded sample data in InMemoryDataService.
+&nbsp; -AVLTree<Servicerequest> and MinHeap<Servicerequest> - for service request organization
 
+&nbsp; -Graph<Servicerequest> - for departmental routing and network analysis.
+
+-All data resets to seeded values when the application restarts.
 
 
 ---
 
 🌟 Highlights
 
--Clean, responsive Bootstrap-based UI.
+-Fully functional three-module municipal management system..
 
--Sorting and filtering for event listings.
+-Intuitive dark-blue Bootstrap interface for accessibility and consistency.
 
--Event recommendations powered by recent user searches.
+-Advanced C# data structure integration within ASP.NET MVC.
 
--Demonstrates practical collection usage (HashSet, Queue, SortedDictionary).
+-Strong separation of concerns between models, controllers, and services.
 
 
 
@@ -210,60 +220,47 @@ Explore the Application
 
 📂 Project Structure
 
-ST10070933\_PROG7312\_MunicipalServices/
-
+ST10070933_PROG7312_MunicipalServices/
 │
-
 ├── Controllers/
-
 │   ├── HomeController.cs
-
 │   ├── IssuesController.cs
-
-│   └── EventsController.cs
-
+│   ├── EventsController.cs
+│   └── ServiceRequestsController.cs
 │
-
 ├── Models/
-
 │   ├── Issue.cs
-
-│   └── Event.cs
-
+│   ├── Event.cs
+│   └── ServiceRequest.cs
 │
-
 ├── Services/
-
 │   ├── IDataService.cs
-
-│   └── InMemoryDataService.cs
-
+│   ├── InMemoryDataService.cs
+│   └── DataStructures/
+│       ├── BSTNode.cs
+│       ├── AVLTree.cs
+│       ├── MinHeap.cs
+│       ├── Graph.cs
+│       └── GraphAlgorithms.cs
 │
-
 ├── Views/
-
 │   ├── Home/
-
 │   ├── Issues/
-
-│   └── Events/
-
+│   ├── Events/
+│   └── ServiceRequests/
 │
-
 └── wwwroot/
-
-&nbsp;   ├── css/
-
-&nbsp;   ├── js/
-
-&nbsp;   └── images/
+    ├── css/
+    ├── js/
+    └── images/
 
 
 ---
 
 ### AI Usage
 
-During the development of this project, AI tools were used as supplementary resources to support understanding of programming concepts and explore modern design approaches. These tools provided guidance, but all coding and implementation were carried out alone by the developer.
+During development, AI tools were used strictly for learning and design guidance, not automated coding.
+All logic and implementation were written and tested by the developer..
 
 Tools used:
 
@@ -271,12 +268,10 @@ Tools used:
 - Claude AI (Anthropic, 2024) – Available at: https://claude.ai/ – Used for design advice and exploring design patterns.
 
 AI assistance was mainly used to:
-- Understand and implement complex data structures like SortedDictionary and search algorithms
-- Learn CSS techniques and UI design principles
-- Review MVC best practices and clean architecture approaches
-- Receive debugging tips and optimization suggestions
-- Design the event recommendation logic
-- Explore advanced LINQ queries and async/await patterns
+-Implementing complex data structures (AVL Tree, Heap, Graph)
+-Debugging and code refactoring advice
+-Bootstrap UI enhancement and accessibility suggestions
+-Improving MVC layer organization and naming consistency
 
 All code was written, tested, and fully understood by the developer. AI tools served as educational references, similar to documentation, tutorials, or forums.
 
