@@ -7,13 +7,13 @@ namespace ST10070933_PROG7312_MunicipalServices.DataStructures
     {
         private BSTNode<T> _root;
 
-        // Get height of node
+        
         private int Height(BSTNode<T> node) => node?.Height ?? 0;
 
-        // Get balance factor
+        
         private int GetBalance(BSTNode<T> node) => node == null ? 0 : Height(node.Left) - Height(node.Right);
 
-        // Right rotation
+
         private BSTNode<T> RotateRight(BSTNode<T> y)
         {
             var x = y.Left;
@@ -28,7 +28,7 @@ namespace ST10070933_PROG7312_MunicipalServices.DataStructures
             return x;
         }
 
-        // Left rotation
+       
         private BSTNode<T> RotateLeft(BSTNode<T> x)
         {
             var y = x.Right;
