@@ -1,0 +1,154 @@
+﻿@model IEnumerable<ST10070933_PROG7312_MunicipalServices.Models.ServiceRequest>
+
+@{
+    ViewData["Title"] = "Service Requests";
+}
+
+<div class="container mt-5 text-light">
+    <!-- Header -->
+    <div class="text-center mb-5">
+        <h2 class="fw-bold text-primary">📋 Service Request Status</h2>
+        <p class="text-secondary">Track your submitted service requests and monitor their progress in real-time.</p>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="row mb-4">
+        <div class="col-md-8 mb-3">
+            <div class="btn-group shadow-sm">
+                <a class="btn btn-primary" href="@Url.Action("Create", "ServiceRequests")">
+                    <i class="bi bi-plus-circle"></i> Submit New Request
+                </a>
+                <a class="btn btn-info text-white" href="@Url.Action("Search", "ServiceRequests")">
+                    <i class="bi bi-search"></i> Search by ID
+                </a>
+                <a class="btn btn-success" href="@Url.Action("Routing", "ServiceRequests")">
+                    <i class="bi bi-diagram-3"></i> Department Routing
+                </a>
+            </div>
+        </div>
+
+        <div class="col-md-4 text-end">
+            <div class="btn-group shadow-sm">
+                <a href="@Url.Action("Index", new { sortBy = "default" })" class="btn btn-outline-light">All</a>
+                <a href="@Url.Action("Index", new { sortBy = "priority" })" class="btn btn-outline-warning">By Priority</a>
+                <a href="@Url.Action("Index", new { sortBy = "id" })" class="btn btn-outline-info">By ID</a>
+                <a href="@Url.Action("Index", new { sortBy = "urgent" })" class="btn btn-outline-danger">Urgent</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sort Info -->
+    @if (ViewBag.SortMethod != null)
+    {
+        <div class="alert alert-primary shadow-sm text-center">
+            <i class="bi bi-funnel"></i> <strong>@ViewBag.SortMethod</strong>
+        </div>
+    }
+
+    <!-- Success Message -->
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show shadow-sm">
+            @TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    <!-- No Requests -->
+    @if (!Model.Any())
+    {
+        <div class="alert alert-warning text-dark text-center shadow-sm">
+            <i class="bi bi-exclamation-triangle"></i> No service requests found.
+            <a href="@Url.Action("Create")" class="text-decoration-underline text-primary fw-semibold">Submit your first request</a>
+        </div>
+    }
+    else
+    {
+        <!-- Requests Table -->
+        <div class="card bg-dark border-0 shadow-lg rounded-4 overflow-hidden">
+            <div class="card-header bg-gradient text-white fw-semibold">
+                <i class="bi bi-table"></i> Current Service Requests
+            </div>
+            <div class="card-body p-0">
+                <table class="table table-dark table-hover align-middle mb-0">
+                    <thead class="bg-primary text-white">
+                        <tr>
+                            <th>Numeric ID</th>
+                            <th>Request ID</th>
+                            <th>Title</th>
+                            <th>Status</th>
+                            <th>Priority</th>
+                            <th>Created</th>
+                            <th>Location</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var req in Model)
+                        {
+                            <tr class="@(req.Priority == 3 ? "table-danger" : req.Priority == 2 ? "table-warning text-dark" : "table-secondary text-light")">
+                                <td><strong>@req.NumericId</strong></td>
+                                <td class="text-muted">@req.RequestId</td>
+                                <td>@req.Title</td>
+                                <td>
+                                    <span class="badge bg-info text-dark">@req.Status</span>
+                                </td>
+                                <td>
+                                    @if (req.Priority == 3)
+                                    {
+                                        <span class="badge bg-danger">High</span>
+                                    }
+                                    else if (req.Priority == 2)
+                                    {
+                                        <span class="badge bg-warning text-dark">Medium</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-secondary">Low</span>
+                                    }
+                                </td>
+                                <td>@req.Created.ToString("yyyy-MM-dd HH:mm")</td>
+                                <td>@req.Location</td>
+                                <td>
+                                    <a href="@Url.Action("Details", "ServiceRequests", new { id = req.RequestId })"
+                                       class="btn btn-sm btn-outline-info">
+                                        <i class="bi bi-eye"></i> Details
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    }
+</div>
+
+<style>
+    body {
+        background-color: #0d1117;
+    }
+
+    .card-header {
+        background: linear-gradient(90deg, #0d6efd 0%, #004aad 100%);
+        border: none;
+    }
+
+    .btn-outline-light:hover {
+        background-color: #0d6efd;
+        color: #fff;
+        border-color: #0d6efd;
+    }
+
+    .table-dark th, .table-dark td {
+        border-color: #1f2937;
+    }
+
+    .table-hover tbody tr:hover {
+        background-color: rgba(13, 110, 253, 0.1);
+    }
+
+    .alert {
+        border-radius: 10px;
+    }
+</style>

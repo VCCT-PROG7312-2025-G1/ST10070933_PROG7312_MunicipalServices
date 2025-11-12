@@ -1,0 +1,29 @@
+﻿@{
+    ViewData["Title"] = "Search Service Request";
+}
+
+<div class="container mt-4">
+    <h2 class="mb-3">Search Service Request</h2>
+    <p class="text-muted">Quickly find your request using its unique ID number</p>
+
+    <div class="card p-4 shadow-sm">
+        <form asp-action="Search" method="get">
+            <div class="mb-3">
+                <label class="form-label">Request ID Number</label>
+                <input type="number" name="numericId" class="form-control" placeholder="Enter your request ID (e.g., 1234)" required />
+            </div>
+
+            <button type="submit" class="btn btn-primary">
+                <i class="bi bi-search"></i> Search
+            </button>
+            <a href="@Url.Action("Index")" class="btn btn-secondary ms-2">Back to List</a>
+        </form>
+    </div>
+
+    @if (ViewBag.Message != null)
+    {
+        <div class="alert alert-warning mt-3">
+            @ViewBag.Message
+        </div>
+    }
+</div>

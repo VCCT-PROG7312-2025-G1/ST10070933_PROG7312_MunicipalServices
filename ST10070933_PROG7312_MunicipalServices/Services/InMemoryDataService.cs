@@ -2,37 +2,37 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Collections.Concurrent;
 
 namespace ST10070933_PROG7312_MunicipalServices.Services
 {
     public class InMemoryDataService : IDataService
     {
-        //Part 1: Issues
+        // === Part 1: Issues ===
         public List<Issue> Issues { get; } = new List<Issue>();
 
-        // Part 2: Events 
-        // SortedDictionary keyed by StartDate for  listing
+        // === Part 2: Events ===
         public SortedDictionary<DateTime, List<Event>> EventsByDate { get; } = new SortedDictionary<DateTime, List<Event>>();
-
-        // Unique categories
         public HashSet<string> EventCategories { get; } = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-
-        // Queue for upcoming events demo
         public Queue<Event> UpcomingEventQueue { get; } = new Queue<Event>();
-
-        // Record search terms and counts for recommendations
         private readonly Dictionary<string, int> _searchCounts = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
 
         private readonly object _lock = new();
 
+        // === Part 3: Service Requests ===
+        private readonly List<ServiceRequest> _serviceRequests = new List<ServiceRequest>();
+        public ServiceRequestManager RequestManager { get; }
+
         public InMemoryDataService()
         {
-            // Seed sample events
+            // Seed sample data
             SeedSampleEvents();
+            RequestManager = new ServiceRequestManager();
+
+            // Seed sample service requests
+            SeedSampleServiceRequests();
         }
 
-        //  Issues 
+        // === Part 1: Issues ===
         public void AddIssue(Issue issue)
         {
             lock (_lock)
@@ -46,7 +46,7 @@ namespace ST10070933_PROG7312_MunicipalServices.Services
             return Issues;
         }
 
-        //Events 
+        // === Part 2: Events ===
         public void AddEvent(Event ev)
         {
             lock (_lock)
@@ -62,7 +62,6 @@ namespace ST10070933_PROG7312_MunicipalServices.Services
 
         public List<Event> GetAllEvents()
         {
-            // Flatten SortedDictionary to a list, ordered by StartDate
             return EventsByDate.SelectMany(kv => kv.Value).OrderBy(e => e.StartDate).ToList();
         }
 
@@ -105,7 +104,69 @@ namespace ST10070933_PROG7312_MunicipalServices.Services
             }
         }
 
-        //Sample data events
+        // === Part 3: Service Requests ===
+        public void AddServiceRequest(ServiceRequest request)
+        {
+            lock (_lock)
+            {
+                _serviceRequests.Add(request);
+                RequestManager.AddRequest(request);
+            }
+        }
+
+        public List<ServiceRequest> GetAllRequests()
+        {
+            lock (_lock)
+            {
+                return _serviceRequests.ToList();
+            }
+        }
+
+        // === Seed Sample Service Requests For part 3  ===
+        private void SeedSampleServiceRequests()
+        {
+            var req1 = new ServiceRequest
+            {
+                RequestId = Guid.NewGuid().ToString(),
+                NumericId = 1001,
+                Title = "Streetlight Malfunction",
+                Description = "Several streetlights are not working along Main Street.",
+                Status = "In Progress",
+                Created = DateTime.Now.AddDays(-2),
+                Location = "Main Street, Zone 3",
+                Priority = 2
+            };
+
+            var req2 = new ServiceRequest
+            {
+                RequestId = Guid.NewGuid().ToString(),
+                NumericId = 1002,
+                Title = "Water Leakage Report",
+                Description = "Water leak detected near the community park fountain.",
+                Status = "Submitted",
+                Created = DateTime.Now.AddDays(-1),
+                Location = "Central Park, Zone 5",
+                Priority = 3
+            };
+
+            var req3 = new ServiceRequest
+            {
+                RequestId = Guid.NewGuid().ToString(),
+                NumericId = 1003,
+                Title = "Road Pothole Repair",
+                Description = "Large potholes need urgent attention on Elm Avenue.",
+                Status = "Completed",
+                Created = DateTime.Now.AddDays(-5),
+                Location = "Elm Avenue, Zone 2",
+                Priority = 1
+            };
+
+            AddServiceRequest(req1);
+            AddServiceRequest(req2);
+            AddServiceRequest(req3);
+        }
+
+        // === Sample Events for Part 2 ===
         private void SeedSampleEvents()
         {
             var e1 = new Event { Title = "Community Clean-up", Description = "Neighborhood clean-up and recycling day.", StartDate = DateTime.UtcNow.AddDays(3), EndDate = DateTime.UtcNow.AddDays(3).AddHours(3), Category = "Community", Priority = 2 };

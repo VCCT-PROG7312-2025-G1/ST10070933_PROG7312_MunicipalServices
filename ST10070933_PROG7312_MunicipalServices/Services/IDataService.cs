@@ -18,5 +18,10 @@ namespace ST10070933_PROG7312_MunicipalServices.Services
         // Search history & recommendations
         void RecordSearch(string query);
         List<string> GetTopSearchTerms(int top = 3);
+
+        List<ServiceRequest> GetAllRequests();
+        void AddServiceRequest(ServiceRequest request);
+        // Service Request Manager (for data structures)
+        ServiceRequestManager RequestManager { get; }
     }
 }
